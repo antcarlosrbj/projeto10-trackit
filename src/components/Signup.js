@@ -12,18 +12,20 @@ export default function Login() {
 
     const [data, setData] = React.useState({
         email: "",
+        name: "",
+        image: "",
         password: ""
     });
 
     
-    function logInTo (event) {
+    function register (event) {
         event.preventDefault();
 
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
         const promise = axios.post(URL, data);
         promise.then(response => {
             console.log(response);
-            /* navigate("/hoje"); */
+            navigate("/");
         });
         promise.catch(err => console.log(err.response));
     }
@@ -31,22 +33,32 @@ export default function Login() {
     return (
         <>
             <Screen>
-                <img src={logotipo} alt='Logo'/>
+                <img src={logotipo} alt='Logo' />
                 <h1>TrackIt</h1>
-                <form onSubmit={logInTo}>
-                    <input type="email" placeholder='email'required value={data.email} onChange={(e) => {
+                <form onSubmit={register}>
+                    <input type="email" placeholder='email' required value={data.email} onChange={(e) => {
                         let newData = {...data};
                         newData.email = e.target.value;
                         setData(newData);
                     }} />
-                    <input type="password" placeholder='senha'required value={data.password} onChange={(e) => {
+                    <input type="password" placeholder='senha' required value={data.password} onChange={(e) => {
                         let newData = {...data};
                         newData.password = e.target.value;
                         setData(newData);
                     }} />
-                    <button type="submit">Entrar</button>
+                    <input type="text" placeholder='nome' required value={data.name} onChange={(e) => {
+                        let newData = {...data};
+                        newData.name = e.target.value;
+                        setData(newData);
+                    }} />
+                    <input type="url" placeholder='foto' required value={data.image} onChange={(e) => {
+                        let newData = {...data};
+                        newData.image = e.target.value;
+                        setData(newData);
+                    }} />
+                    <button type="submit">Cadastrar</button>
                 </form>
-                <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
+                <Link to="/">Já tem uma conta? Faça login!</Link>
             </Screen>
         </>
     );
@@ -58,7 +70,7 @@ const Screen = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
-
+    
     form {
         display: flex;
         flex-direction: column;
@@ -104,6 +116,6 @@ const Screen = styled.div`
     a {
         font-family: 'Lexend Deca', sans-serif;
         color: #52B6FF;
-        text-decoration: underline;
+        text-decoration-line: underline;
     }
 `;
