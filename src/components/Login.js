@@ -5,18 +5,24 @@ import axios from 'axios';
 
 
 import logotipo from '../img/logo-trackit.png';
+import { ThreeDots } from "react-loader-spinner";
+
 
 export default function Login() {
 
     const navigate = useNavigate();
+
+    const [disabled, setDisabled] = React.useState(false);
 
     const [data, setData] = React.useState({
         email: "",
         password: ""
     });
 
+
+
     
-    function logInTo (event) {
+    function logInTo(event) {
         event.preventDefault();
 
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
@@ -25,26 +31,31 @@ export default function Login() {
             console.log(response);
             /* navigate("/hoje"); */
         });
-        promise.catch(err => console.log(err.response));
+        promise.catch(err => {
+            setDisabled(false);
+            console.log(err.response);
+            alert("E-mail e/ou senha incorretos")
+        });
+        setDisabled(true);
     }
 
     return (
         <>
             <Screen>
-                <img src={logotipo} alt='Logo'/>
+                <img src={logotipo} alt='Logo' />
                 <h1>TrackIt</h1>
                 <form onSubmit={logInTo}>
-                    <input type="email" placeholder='email'required value={data.email} onChange={(e) => {
-                        let newData = {...data};
+                    <input disabled={disabled} type="email" placeholder='email' required value={data.email} onChange={(e) => {
+                        let newData = { ...data };
                         newData.email = e.target.value;
                         setData(newData);
                     }} />
-                    <input type="password" placeholder='senha'required value={data.password} onChange={(e) => {
-                        let newData = {...data};
+                    <input disabled={disabled} type="password" placeholder='senha' required value={data.password} onChange={(e) => {
+                        let newData = { ...data };
                         newData.password = e.target.value;
                         setData(newData);
                     }} />
-                    <button type="submit">Entrar</button>
+                    <button type="submit">{disabled ? <ThreeDots {...{ color: "white" }} /> : "Entrar"}</button>
                 </form>
                 <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
             </Screen>
@@ -89,6 +100,10 @@ const Screen = styled.div`
         padding-left: 10px;
     }
 
+    input[disabled] {
+        cursor: not-allowed;
+    }
+
     button {
         width: 303px;
         height: 45px;
@@ -99,6 +114,14 @@ const Screen = styled.div`
         font-family: 'Lexend Deca', sans-serif;
         font-size: 21px;
         margin-bottom: 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button > div {
+        width: 50px;
     }
 
     a {

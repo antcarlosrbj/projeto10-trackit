@@ -5,10 +5,14 @@ import axios from 'axios';
 
 
 import logotipo from '../img/logo-trackit.png';
+import { ThreeDots } from "react-loader-spinner";
+
 
 export default function Login() {
 
     const navigate = useNavigate();
+
+    const [disabled, setDisabled] = React.useState(false);
 
     const [data, setData] = React.useState({
         email: "",
@@ -27,7 +31,12 @@ export default function Login() {
             console.log(response);
             navigate("/");
         });
-        promise.catch(err => console.log(err.response));
+        promise.catch(err => {
+            setDisabled(false);
+            console.log(err.response);
+            alert("Houve um erro no cadastro. Verifique os dados e tente novamente")
+        });
+        setDisabled(true);
     }
 
     return (
@@ -36,27 +45,27 @@ export default function Login() {
                 <img src={logotipo} alt='Logo' />
                 <h1>TrackIt</h1>
                 <form onSubmit={register}>
-                    <input type="email" placeholder='email' required value={data.email} onChange={(e) => {
+                    <input disabled={disabled} type="email" placeholder='email' required value={data.email} onChange={(e) => {
                         let newData = {...data};
                         newData.email = e.target.value;
                         setData(newData);
                     }} />
-                    <input type="password" placeholder='senha' required value={data.password} onChange={(e) => {
+                    <input disabled={disabled} type="password" placeholder='senha' required value={data.password} onChange={(e) => {
                         let newData = {...data};
                         newData.password = e.target.value;
                         setData(newData);
                     }} />
-                    <input type="text" placeholder='nome' required value={data.name} onChange={(e) => {
+                    <input disabled={disabled} type="text" placeholder='nome' required value={data.name} onChange={(e) => {
                         let newData = {...data};
                         newData.name = e.target.value;
                         setData(newData);
                     }} />
-                    <input type="url" placeholder='foto' required value={data.image} onChange={(e) => {
+                    <input disabled={disabled} type="url" placeholder='foto' required value={data.image} onChange={(e) => {
                         let newData = {...data};
                         newData.image = e.target.value;
                         setData(newData);
                     }} />
-                    <button type="submit">Cadastrar</button>
+                    <button type="submit">{disabled ? <ThreeDots {...{ color: "white" }} /> : "Cadastrar"}</button>
                 </form>
                 <Link to="/">Já tem uma conta? Faça login!</Link>
             </Screen>
@@ -101,6 +110,10 @@ const Screen = styled.div`
         padding-left: 10px;
     }
 
+    input[disabled] {
+        cursor: not-allowed;
+    }
+
     button {
         width: 303px;
         height: 45px;
@@ -111,6 +124,14 @@ const Screen = styled.div`
         font-family: 'Lexend Deca', sans-serif;
         font-size: 21px;
         margin-bottom: 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button > div {
+        width: 50px;
     }
 
     a {
