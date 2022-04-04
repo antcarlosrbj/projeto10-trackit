@@ -8,7 +8,7 @@ import logotipo from '../img/logo-trackit.png';
 import { ThreeDots } from "react-loader-spinner";
 
 
-export default function Login() {
+export default function Login({setToken, setPerfilImage}) {
 
     const navigate = useNavigate();
 
@@ -19,17 +19,24 @@ export default function Login() {
         password: ""
     });
 
+    if(localStorage.getItem("token") != null) {
+        setToken(localStorage.getItem("token"));
+        setPerfilImage(localStorage.getItem("image"));
+        navigate("/hoje");
+    }
 
 
-    
     function logInTo(event) {
         event.preventDefault();
 
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
         const promise = axios.post(URL, data);
         promise.then(response => {
-            console.log(response);
-            /* navigate("/hoje"); */
+            setToken(response.data.token);
+            localStorage.setItem("token", response.data.token);
+            setPerfilImage(response.data.image);
+            localStorage.setItem("image", response.data.image);
+            navigate("/hoje");
         });
         promise.catch(err => {
             setDisabled(false);
@@ -42,8 +49,8 @@ export default function Login() {
     return (
         <>
             <Screen>
-                <img src={logotipo} alt='Logo' />
-                <h1>TrackIt</h1>
+                <img onClick={() => localStorage.setItem("token", "123456")} src={logotipo} alt='Logo' />
+                <h1 onClick={() => console.log(localStorage.getItem("token") == null)}>TrackIt</h1>
                 <form onSubmit={logInTo}>
                     <input disabled={disabled} type="email" placeholder='email' required value={data.email} onChange={(e) => {
                         let newData = { ...data };

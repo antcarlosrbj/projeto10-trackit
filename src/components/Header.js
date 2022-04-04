@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function Header() {
+export default function Header({perfilImage}) {
     return (
         <HeaderDiv>
             <p>TrackIt</p>
-            <img src='https://studiosol-a.akamaihd.net/uploadfile/letras/fotos/2/2/3/7/2237c715b67133be23b5808c5c769cd9.jpg' alt='Perfil' />
+            <img src={perfilImage} alt='Perfil' />
         </HeaderDiv>
     );
 }
 
 const HeaderDiv = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    
     height: 70px;
     background: #126BA5;
     box-shadow: 0px 4px 4px 0px #00000026;
