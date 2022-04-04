@@ -73,7 +73,6 @@ export default function Habits({ token, setToken, renderAgain, setRenderAgain, p
         promise.then(response => {
             console.log(response);
             let newAddHabits = { ...addHabitsDefault };
-            newAddHabits.visible = true;
             setAddHabits(newAddHabits);
             setDisabled(false);
             setRenderAgain([]);
@@ -95,7 +94,7 @@ export default function Habits({ token, setToken, renderAgain, setRenderAgain, p
                     <div className="plus" onClick={() => {
                         let newAddHabits = { ...addHabits };
                         if (newAddHabits.visible) {
-                            newAddHabits = { ...addHabitsDefault };
+                            newAddHabits.visible = false;
                         } else {
                             newAddHabits.visible = true;
                         };
@@ -184,7 +183,7 @@ export default function Habits({ token, setToken, renderAgain, setRenderAgain, p
                     <div className="buttons">
                         <button type="button" className="cancel" onClick={() => {
                             let newAddHabits = { ...addHabits };
-                            newAddHabits = { ...addHabitsDefault };
+                            newAddHabits.visible = false;
                             setAddHabits(newAddHabits);
                         }}>Cancelar</button>
                         <button type="button" className="save" onClick={

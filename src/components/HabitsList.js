@@ -33,13 +33,15 @@ export default function HabitsList({token, renderAgain, setRenderAgain}) {
 	}, [renderAgain]);
 
     function deleteHabit(id) {
-        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + id;
-        axios.delete(URL, {
-            headers: {
-                "Authorization": ("Bearer " + token)
-            }
-          });
-        setRenderAgain([]);
+        if(window.confirm("Tem certeza que deseja excluir esse hábito?")) {
+            const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/" + id;
+            axios.delete(URL, {
+                headers: {
+                    "Authorization": ("Bearer " + token)
+                }
+            });
+            setRenderAgain([]);
+        }
     }
 
     return (
